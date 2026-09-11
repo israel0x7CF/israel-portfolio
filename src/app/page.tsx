@@ -564,36 +564,47 @@ export default function Home() {
         wordsClass: "reveal-word",
       });
 
-      gsap.set(split.words, { opacity: 0.18, y: 14 });
+      gsap.set(split.words, { opacity: 0.18, y: 8 });
       gsap.set(".hero-title", {
         autoAlpha: 0,
-        y: 28,
-        scale: 0.985,
+        y: 8,
+        scale: 0.995,
         transformOrigin: "0% 50%",
       });
-      gsap.set(".hero-illustration", { autoAlpha: 0, y: -16, scale: 0.985 });
+      gsap.set(".hero-illustration", { autoAlpha: 0, y: -10, scale: 0.96 });
       gsap.set(".system-layer, .system-code", { autoAlpha: 0, y: 18, scale: 0.97 });
-      gsap.set(".hero-actions a", { autoAlpha: 0, y: 14, scale: 0.98 });
+      gsap.set(".hero-actions a", { autoAlpha: 0, y: 8, scale: 0.99 });
       gsap
         .timeline({
-          defaults: { ease: "power3.out" },
+          defaults: { ease: "power2.out" },
         })
+        .to(
+          ".hero-illustration",
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            duration: 1.05,
+            ease: "power3.out",
+          },
+          0,
+        )
         .to(
           ".hero-title",
           {
             autoAlpha: 1,
             y: 0,
             scale: 1,
-            duration: 0.8,
+            duration: 1,
           },
-          0,
+          0.16,
         )
         .to(split.words, {
           opacity: 1,
           y: 0,
-          stagger: 0.035,
+          stagger: 0.018,
           duration: 0.65,
-        }, 0.08)
+        }, 0.38)
         .to(
           ".hero-actions a",
           {
@@ -601,19 +612,9 @@ export default function Home() {
             y: 0,
             scale: 1,
             stagger: 0.08,
-            ease: "back.out(1.6)",
+            ease: "power2.out",
           },
-          0.28,
-        )
-        .to(
-          ".hero-illustration",
-          {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            ease: "back.out(1.35)",
-          },
-          0.18,
+          0.56,
         )
         .to(
           ".system-layer, .system-code",
@@ -1115,26 +1116,30 @@ export default function Home() {
             </a>
           </nav>
 
-          <div className="hero-illustration">
-            <HeroSystemVisual />
-          </div>
+          <div className="hero-stage">
+            <div className="hero-illustration">
+              <HeroSystemVisual />
+            </div>
 
-          <div className="hero-copy">
-            <p className="eyebrow">BACKEND ENGINEER · ADDIS ABABA · REMOTE</p>
-            <h1 className="hero-title">
-              I build backend systems that hold together as products get complicated.
-            </h1>
-            <p className="scroll-reveal-copy">
-              APIs, data models, workflows, integrations, infrastructure operations,
-              and runtime evidence—from development through production.
-            </p>
-            <div className="hero-actions">
-              <a className="primary-link" href="#work">
-                View selected work <ArrowUpRight size={18} />
-              </a>
-              <a className="secondary-link" href="#contact">
-                Discuss a backend role <ArrowUpRight size={18} />
-              </a>
+            <div className="hero-support">
+              <div className="hero-support-copy">
+                <p className="eyebrow">BACKEND ENGINEER · ADDIS ABABA · REMOTE</p>
+                <h1 className="hero-title">
+                  I build backend systems that hold together as products get complicated.
+                </h1>
+                <p className="scroll-reveal-copy">
+                  APIs, data models, workflows, integrations, infrastructure operations,
+                  and runtime evidence—from development through production.
+                </p>
+              </div>
+              <div className="hero-actions">
+                <a className="primary-link" href="#work">
+                  View selected work <ArrowUpRight size={18} />
+                </a>
+                <a className="secondary-link" href="#contact">
+                  Discuss a backend role <ArrowUpRight size={18} />
+                </a>
+              </div>
             </div>
           </div>
         </div>

@@ -16,35 +16,35 @@ const systemNodes: SystemNode[] = [
     id: "api",
     label: "API Boundary",
     detail: "requests enter",
-    position: new THREE.Vector3(-2.7, 0.52, 0.25),
+    position: new THREE.Vector3(-2.7, 0.88, 0.25),
     color: "#7FC7EE",
   },
   {
     id: "ingestion",
     label: "Ingestion",
     detail: "events normalized",
-    position: new THREE.Vector3(-1.25, -0.34, -0.05),
+    position: new THREE.Vector3(-1.25, -0.72, -0.05),
     color: "#FF9DC0",
   },
   {
     id: "events",
     label: "Runtime Events",
     detail: "behavior recorded",
-    position: new THREE.Vector3(0.2, 0.72, 0.18),
+    position: new THREE.Vector3(0.2, 0.98, 0.18),
     color: "#FFCB5C",
   },
   {
     id: "store",
     label: "Evidence Store",
     detail: "state preserved",
-    position: new THREE.Vector3(1.24, -0.58, -0.1),
+    position: new THREE.Vector3(1.24, -0.86, -0.1),
     color: "#7FC7EE",
   },
   {
     id: "flow",
     label: "Flow Reconstruction",
     detail: "case file rebuilt",
-    position: new THREE.Vector3(2.66, 0.12, 0.22),
+    position: new THREE.Vector3(2.66, 0.48, 0.22),
     color: "#FF9DC0",
   },
 ];
@@ -175,7 +175,7 @@ export default function HeroSystemVisual() {
       nodeGroup.userData.id = node.id;
 
       const body = new THREE.Mesh(
-        new THREE.SphereGeometry(index === 4 ? 0.36 : 0.31, 36, 24),
+        new THREE.SphereGeometry(index === 4 ? 0.42 : 0.36, 36, 24),
         softMaterial(node.color),
       );
       body.userData.id = node.id;
@@ -183,7 +183,7 @@ export default function HeroSystemVisual() {
       nodeMeshes.push(body);
 
       const core = new THREE.Mesh(
-        new THREE.SphereGeometry(index === 4 ? 0.11 : 0.09, 20, 16),
+        new THREE.SphereGeometry(index === 4 ? 0.125 : 0.105, 20, 16),
         new THREE.MeshBasicMaterial({
           color: index === 4 ? "#FF7A50" : "#1B2430",
           opacity: 0.78,
@@ -192,7 +192,7 @@ export default function HeroSystemVisual() {
       );
 
       const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(index === 4 ? 0.46 : 0.4, 0.012, 12, 60),
+        new THREE.TorusGeometry(index === 4 ? 0.52 : 0.46, 0.012, 12, 60),
         new THREE.MeshBasicMaterial({
           color: node.color,
           opacity: 0.52,
@@ -246,7 +246,7 @@ export default function HeroSystemVisual() {
     });
     const pulses = curves.map((curve, curveIndex) => {
       const pulse = new THREE.Mesh(
-        new THREE.SphereGeometry(0.06, 18, 14),
+        new THREE.SphereGeometry(0.065, 18, 14),
         pulseMaterial.clone(),
       );
       pulse.userData.curve = curve;
@@ -271,7 +271,15 @@ export default function HeroSystemVisual() {
       const width = Math.max(1, rect.width);
       const height = Math.max(1, rect.height);
       camera.aspect = width / height;
-      cameraDistance = 7.05 * Math.max(1, 1.3 / camera.aspect);
+      const narrowFit = Math.max(1, 1.48 / camera.aspect);
+      const wideZoom = THREE.MathUtils.mapLinear(
+        THREE.MathUtils.clamp(camera.aspect, 1.6, 2.8),
+        1.6,
+        2.8,
+        1,
+        1.28,
+      );
+      cameraDistance = (7.05 * narrowFit) / wideZoom;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height, false);
     };
@@ -420,7 +428,12 @@ export default function HeroSystemVisual() {
   }, []);
 
   return (
-    <div className="hero-system-visual" ref={rootRef}>
+    <div
+      className="hero-system-visual"
+      ref={rootRef}
+      role="img"
+      aria-label="Animated backend flow from API boundary through runtime evidence and flow reconstruction"
+    >
       <HeroSystemFallback />
       {!fallback ? (
         <div className="hero-system-labels" aria-hidden="true">

@@ -182,7 +182,7 @@ a {
 }
 
 .hero {
-  min-height: 100svh;
+  min-height: min(100svh, 52rem);
   padding: 0;
   position: relative;
 }
@@ -197,9 +197,10 @@ a {
   box-shadow: none;
   display: grid;
   grid-template-rows: auto 1fr;
+  isolation: isolate;
   margin: 0 auto;
   max-width: none;
-  min-height: 100svh;
+  min-height: min(100svh, 52rem);
   overflow: hidden;
   padding: clamp(0.65rem, 1.2vw, 1rem);
   position: relative;
@@ -217,18 +218,32 @@ a {
   position: absolute;
 }
 
-.hero-illustration {
-  inset: clamp(5.4rem, 7vw, 6.6rem) clamp(1.25rem, 2vw, 2.5rem) clamp(1.8rem, 5vh, 3.2rem) clamp(34rem, 43vw, 49rem);
-  position: absolute;
-  z-index: 1;
+.hero-stage {
+  isolation: isolate;
+  min-height: 36rem;
+  position: relative;
 }
 
-.hero-copy {
-  align-self: center;
-  max-width: min(100%, 48rem);
-  padding: clamp(2rem, 4vw, 4.5rem) clamp(1.25rem, 2vw, 2rem) clamp(2rem, 4vw, 4.5rem) clamp(1rem, 5vw, 5rem);
-  position: relative;
-  z-index: 4;
+.hero-stage::before {
+  background:
+    radial-gradient(circle at 50% 44%, color-mix(in srgb, var(--sun) 38%, transparent) 0 10rem, transparent 27rem),
+    linear-gradient(120deg, color-mix(in srgb, var(--blue) 28%, transparent), color-mix(in srgb, var(--bg) 48%, transparent) 48%, color-mix(in srgb, var(--pink) 28%, transparent));
+  border: 1px solid color-mix(in srgb, var(--ink) 9%, transparent);
+  border-radius: clamp(1rem, 2vw, 2rem);
+  content: "";
+  inset: 0.25rem 0.25rem 8rem;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.hero-illustration {
+  height: auto;
+  inset: clamp(0.25rem, 0.8vw, 0.75rem) clamp(0.25rem, 0.8vw, 0.75rem) 8rem;
+  margin: 0;
+  order: initial;
+  position: absolute;
+  z-index: 3;
 }
 
 .eyebrow {
@@ -260,6 +275,13 @@ h1 {
 }
 
 .hero-title {
+  color: color-mix(in srgb, var(--ink) 78%, transparent);
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  max-width: 31rem;
+  text-align: left;
   text-wrap: balance;
   will-change: transform;
 }
@@ -288,14 +310,69 @@ h3 {
   will-change: opacity, transform;
 }
 
-.hero-copy > p:not(.eyebrow):not(.credibility-strip) {
-  color: var(--ink-soft);
-  font-size: clamp(1rem, 1.16vw, 1.12rem);
+.hero-support {
+  align-items: end;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 11%, transparent);
+  bottom: clamp(0.25rem, 0.8vw, 0.75rem);
+  display: grid;
+  gap: clamp(1rem, 3vw, 3rem);
+  grid-template-columns: minmax(0, 34rem) auto;
+  left: clamp(1rem, 3vw, 3rem);
+  padding-top: 0.75rem;
+  position: absolute;
+  right: clamp(1rem, 3vw, 3rem);
+  z-index: 5;
+}
+
+.hero-support-copy {
+  display: grid;
+  gap: 0.32rem;
+}
+
+.hero-support .eyebrow {
+  color: color-mix(in srgb, var(--coral-deep) 72%, transparent);
+  font-size: 0.62rem;
+  letter-spacing: 0.11em;
+  margin: 0;
+}
+
+.hero-support-copy > p:not(.eyebrow) {
+  color: color-mix(in srgb, var(--ink-soft) 76%, transparent);
+  font-size: clamp(0.72rem, 0.82vw, 0.82rem);
   font-weight: 450;
-  line-height: 1.5;
-  margin: clamp(0.95rem, 1.7vw, 1.25rem) 0 0;
+  line-height: 1.45;
+  margin: 0;
   max-width: 31rem;
   will-change: opacity, transform;
+}
+
+.hero-support .hero-actions {
+  gap: 0.35rem;
+  justify-self: end;
+  margin-top: 0;
+}
+
+.hero-support .primary-link,
+.hero-support .secondary-link {
+  font-size: 0.76rem;
+  min-height: 2.45rem;
+  padding: 0.55rem 0.7rem;
+}
+
+.hero-support .primary-link {
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  color: var(--ink);
+}
+
+.hero-support .primary-link:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.hero-support .secondary-link {
+  background: transparent;
+  border-color: transparent;
 }
 
 .hero-actions,
@@ -1913,12 +1990,19 @@ h3 {
 }
 
 .why-diagram {
+  align-self: center;
+  container-name: ownership-diagram;
+  container-type: inline-size;
   min-width: 0;
 }
 
-.why-diagram .diagram-shell {
-  aspect-ratio: 16 / 7.6;
-  min-height: clamp(20rem, 48vh, 32rem);
+.diagram-feature.why-diagram .diagram-shell {
+  aspect-ratio: 760 / 360;
+  min-height: 0;
+}
+
+.why-diagram .ownership-diagram-compact {
+  display: none;
 }
 
 .why-copy-panel {
@@ -2814,11 +2898,6 @@ h3 {
     min-height: auto;
   }
 
-  .why-diagram .diagram-shell {
-    aspect-ratio: 16 / 9;
-    min-height: clamp(18rem, 42vh, 26rem);
-  }
-
   .style-section .text-section-content {
     grid-template-columns: 1fr;
   }
@@ -3010,31 +3089,36 @@ h3 {
   }
 
   .hero-panel {
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto minmax(0, 1fr);
     min-height: 100svh;
   }
 
+  .hero-stage {
+    min-height: 34rem;
+  }
+
+  .hero-stage::before {
+    inset: 0.2rem 0.2rem 10.5rem;
+  }
+
   .hero-illustration {
-    height: clamp(24rem, 46vh, 34rem);
-    inset: auto;
-    margin: 0 clamp(0.65rem, 3vw, 1.5rem) clamp(1rem, 3vh, 1.5rem);
-    order: 3;
-    position: relative;
+    inset: 0 clamp(0.35rem, 2vw, 1rem) 10.5rem;
   }
 
-  .hero-copy {
-    align-self: start;
-    max-width: 44rem;
-    order: 2;
-    padding: clamp(2.2rem, 6vw, 4rem) clamp(1rem, 5vw, 2rem) 1rem;
-  }
-
-  .hero-system-labels {
-    display: none;
+  .hero-title {
+    font-size: clamp(0.98rem, 2.5vw, 1.15rem);
+    max-width: 32rem;
   }
 
   .hero-system-visual {
-    min-height: 22rem;
+    min-height: 0;
+  }
+
+  .hero-support {
+    gap: clamp(0.75rem, 2.5vw, 1.5rem);
+    grid-template-columns: minmax(0, 1fr) auto;
+    left: clamp(0.75rem, 3vw, 1.5rem);
+    right: clamp(0.75rem, 3vw, 1.5rem);
   }
 
   .system-code {
@@ -3098,26 +3182,57 @@ h3 {
     padding: 0.5rem;
   }
 
+  .hero-stage {
+    min-height: 34rem;
+  }
+
+  .hero-stage::before {
+    inset: 0.15rem 0.15rem 11.5rem;
+  }
+
   .hero-illustration {
-    height: 20rem;
-    inset: auto 0.75rem auto;
-    margin: 0.5rem 0.4rem 1rem;
-    order: 3;
-    position: relative;
+    inset: 0 0.1rem 11.5rem;
   }
 
-  .hero-copy {
-    order: 2;
-    padding: 1.35rem 0.65rem 0.75rem;
-  }
-
-  .hero-copy > p:not(.eyebrow):not(.credibility-strip) {
-    font-size: 1rem;
-    max-width: 33rem;
+  .hero-title {
+    color: color-mix(in srgb, var(--ink) 78%, transparent);
+    font-size: 0.95rem;
+    line-height: 1.18;
+    max-width: 34rem;
   }
 
   .hero-system-visual {
-    min-height: 18rem;
+    min-height: 0;
+  }
+
+  .hero-system-labels {
+    display: none;
+  }
+
+  .hero-support {
+    gap: 0.65rem;
+    grid-template-columns: 1fr;
+    left: 0.4rem;
+    padding-top: 0.6rem;
+    right: 0.4rem;
+  }
+
+  .hero-support-copy > p:not(.eyebrow) {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    max-width: 35rem;
+  }
+
+  .hero-support .hero-actions {
+    justify-self: start;
+  }
+
+  .hero-support .primary-link,
+  .hero-support .secondary-link {
+    font-size: 0.7rem;
+    min-height: 2.3rem;
+    padding: 0.48rem 0.58rem;
+    width: auto;
   }
 
   .fallback-node {
@@ -3270,10 +3385,6 @@ h3 {
     grid-row: auto;
   }
 
-  .why-diagram .diagram-shell {
-    min-height: auto;
-  }
-
   .capability-card {
     min-height: auto;
     padding: 1rem 0;
@@ -3356,6 +3467,20 @@ h3 {
   .primary-link,
   .secondary-link {
     width: 100%;
+  }
+}
+
+@container ownership-diagram (max-width: 600px) {
+  .diagram-feature.why-diagram .diagram-shell {
+    aspect-ratio: 4 / 3;
+  }
+
+  .why-diagram .ownership-diagram-desktop {
+    display: none;
+  }
+
+  .why-diagram .ownership-diagram-compact {
+    display: block;
   }
 }
 
